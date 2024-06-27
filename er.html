@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>请输入代码生成二维码</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
+    input {
+        padding: 5px;
+        margin: 10px;
+        width: 80%;
+        max-width: 200px;
+    }
+    button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+    }
+    #qrCode {
+        margin-top: 20px;
+    }
+</style>
+</head>
+<body>
+        <p>©刘端硕插件网2024 </p>
+    <h1>请输入代码生成分享二维码</h1>
+    <form id="qrForm">
+        <input type="text" id="qrText" maxlength="4" placeholder="请输入接收码">
+        <br>
+        <button type="button" id="generateBtn">确定</button>
+            <p style="font-size: 20px;"><a href="/share/ip.php?start=have.html">如果你是接收端，请单击这个文本</a>。</p>
+            <p style="font-size: 20px;"><a href="/share/ip.php?start=index.html">如果你是发送端，请单击这个文本</a>。</p>
+            <h4>↓二维码生成区域↓</h4>
+    </form>
+    <div id="qrCode"></div>
+
+    <script>
+        document.getElementById('generateBtn').addEventListener('click', function() {
+            var inputValue = document.getElementById('qrText').value;
+            if (inputValue.length > 0) {
+                var url = 'http://xhnzz.xyz/index/api/index/ewm/api.php?img=1&dt=L&text=http://www.0miao.site:86/share/upload/' + inputValue;
+                var img = document.createElement('img');
+                img.src = url;
+                img.alt = 'Generated QR Code';
+                document.getElementById('qrCode').innerHTML = '';
+                document.getElementById('qrCode').appendChild(img);
+            } else {
+                alert('请输入有效字符！');
+            }
+        });
+    </script>
+</body>
+</html>
+

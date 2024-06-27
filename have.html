@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智慧文件互传</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        #codeInput {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        #submitButton {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #submitButton:hover {
+            background-color: #0056b3;
+        }
+        #submitButton:active {
+            background-color: #004080;
+        }
+        #submitButton:focus {
+            outline: none;
+        }
+        #submitButton:disabled {
+            background-color: #bfbfbf;
+            cursor: not-allowed;
+        }
+        #submitButton:disabled:hover {
+            background-color: #bfbfbf;
+        }
+        #submitButton:disabled:active {
+            background-color: #bfbfbf;
+        }
+        #submitButton:disabled:focus {
+            outline: none;
+        }
+        p.instructions {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var form = document.querySelector('form');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                var codeInput = document.getElementById('codeInput').value;
+                window.location.href = '/share/ip.php?start=upload/' + codeInput;
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>文件接收中心</h1>
+    <p class="instructions">请输入接收码接收文件</p>
+    <p>©刘端硕文件传输外网（2024）</p>
+    <form>
+        <input type="text" id="codeInput" maxlength="4" pattern="[A-Za-z0-9]{4}" title="请输入接收码" placeholder="输入传输码（3-5个字符）" required>
+        <input type="submit" id="submitButton" value="确定">
+            <p style="font-size: 26px;"><a href="http://www.0miao.site:86/share">我想要体验</a>。</p>
+            <h3>我们的优势：免登录、免广告、高速稳定下载。现在进入免费赠送1000MB存储空间。</h3>
+    </form>
+</body>
+</html>

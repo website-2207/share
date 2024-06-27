@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件上传</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f7f7f7;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        form {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        input[type="file"] {
+            margin-bottom: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        #folderName {
+            margin-top: 20px;
+            font-size: 16px;
+            text-align: center;
+        }
+        #storageInfo {
+            font-size: 14px;
+            text-align: center;
+            margin-top: 10px;
+        }
+        @media (max-width: 600px) {
+            form {
+                padding: 10px;
+            }
+            button[type="submit"] {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>文件上传中心</h1>
+    <div id="storageInfo"></div>
+    <form id="uploadForm" action="upload.php" method="post" enctype="multipart/form-data">
+        <input type="file" name="fileToUpload" id="fileToUpload">
+        <button type="submit">上传文件</button>
+       <h4>↓ 拓展坞功能插件 ↓</h4>
+            <p style="font-size: 18px;"><a href="/share/ip.php?start=have.html">我想要接收文件</a></p>
+            <p style="font-size: 18px;"><a href="/share/ip.php?start=er.html">我想要转成二维码</a></p>
+            <p style="font-size: 18px;"><a href="/share/ip.php?start=wst.html">使用网站拓展包</a></p>
+           <p>©刘端硕文件传输外网（2024）</p>
+
+    </form>
+    <p id="folderName"></p>
+
+    <script>
+        // 获取存储空间信息
+        var storageSpace = parseInt(getCookie("storageSpace"));
+        if (isNaN(storageSpace)) {
+            storageSpace = 1000; // 默认值为1000
+            setCookie("storageSpace", storageSpace, 365);
+        }
+        displayStorageInfo(storageSpace);
+
+        // 更新存储空间信息
+        function updateStorageSpace(fileSize) {
+            storageSpace -= fileSize;
+            if (storageSpace < 0) {
+                alert("上传失败！空间不足");
+                return false;
+            } else {
+                setCookie("storageSpace", storageSpace, 365);
+                displayStorageInfo(storageSpace);
+                return true;
+            }
+        }
+
+        // 显示存储空间信息
+        function displayStorageInfo(space) {
+            document.getElementById("storageInfo").innerText = "你还剩余 " + space + "MB 存储空间";
+        }
+
+        // 获取cookie
+        function getCookie(name) {
+            var value = "; " + document.cookie;
+            var parts = value.split("; " + name + "=");
+            if (parts.length == 2) return parts.pop().split(";").shift();
+        }
+
+        // 设置cookie
+        function setCookie(name, value, days) {
+            var expires = "";
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "") + expires + "; path=/";
+        }
+
+        // 监听表单提交事件
+        document.getElementById("uploadForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            var fileInput = document.getElementById("fileToUpload");
+            var fileSize = fileInput.files[0].size / 1024 / 1024; // 文件大小（MB）
+            if (updateStorageSpace(fileSize)) {
+                var formData = new FormData(this);
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "upload.php", true);
+                xhr.onload = function() {
+                    if (xhr.status == 200) {
+                        var folderName = xhr.responseText;
+                        document.getElementById("folderName").innerText = "你可以让接收的人输入下面代码获得文件：" + folderName;
+                    } else {
+                        console.error("上传失败");
+                    }
+                };
+                xhr.send(formData);
+            }
+        });
+
+    </script>
+</body>
+</html>

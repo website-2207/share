@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拓展包</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #inputBox {
+            margin-top: 20px;
+            font-size: 16px;
+            padding: 5px;
+        }
+        #text1, #text2 {
+            display: none;
+            margin-top: 20px;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 10px;
+            z-index: 1000;
+        }
+        .popup button {
+            margin: 5px;
+        }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" id="inputBox" maxlength="4" placeholder="请输入4位数字" oninput="checkInput()">
+    <div id="text1">免ICP备案：<a href="#" onclick="showPopup('http://150.158.112.167:86/share/upload/')">http://150.158.112.167:86/share/upload/<span id="inputValue"></span></a></div>
+    <div id="text2">网址访问：<a href="#" onclick="showPopup('http://www.0miao.site:86/share/upload/')">http://www.0miao.site:86/share/upload/<span id="inputValue"></span></a></div>
+    <a href="#" onclick="location.reload();">刷新网页</a>
+
+    <!-- 版权声明 -->
+    <p>©刘端硕插件网2024 </p>
+
+    <!-- 弹窗及遮罩层 -->
+    <div class="overlay" id="overlay"></div>
+    <div class="popup" id="popup">
+        <p id="popupText"></p>
+        <button onclick="copyToClipboard()">复制</button>
+        <button onclick="generateQRCode()">转为二维码</button>
+        <button onclick="openLink()">打开</button>
+        <button onclick="closePopup()">退出</button>
+    </div>
+
+    <script>
+        function checkInput() {
+            let inputBox = document.getElementById('inputBox');
+            let inputValue = inputBox.value;
+            if (inputValue.length === 4) {
+                document.getElementById('text1').style.display = 'block';
+                document.getElementById('text2').style.display = 'block';
+                document.getElementById('inputValue').innerText = inputValue;
+            } else {
+                document.getElementById('text1').style.display = 'none';
+                document.getElementById('text2').style.display = 'none';
+            }
+        }
+
+        let currentLink = '';
+
+        function showPopup(baseURL) {
+            let inputValue = document.getElementById('inputBox').value;
+            currentLink = baseURL + inputValue;
+            document.getElementById('popupText').innerText = currentLink;
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('popup').style.display = 'block';
+        }
+
+        function closePopup() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('popup').style.display = 'none';
+        }
+
+        function copyToClipboard() {
+            navigator.clipboard.writeText(currentLink).then(() => {
+                alert('链接已复制到剪贴板');
+            });
+        }
+
+        function generateQRCode() {
+            let qrCodeUrl = `http://xhnzz.xyz/index/api/index/ewm/api.php?img=1&dt=L&text=${encodeURIComponent(currentLink)}`;
+            window.open(qrCodeUrl, '_blank');
+        }
+
+        function openLink() {
+            window.open(currentLink, '_blank');
+        }
+    </script>
+</body>
+</html>
